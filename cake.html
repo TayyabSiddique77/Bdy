@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cut the Cake! 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      color: #d6336c;
+      font-size: 8vw;
+      max-font-size: 3rem;
+      margin: 0 0 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .cake-container {
+      position: relative;
+      width: 90vw;
+      max-width: 320px;
+      aspect-ratio: 1/1;
+      margin-bottom: 30px;
+    }
+
+    #cake, #cake-slice {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #cake-slice {
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      z-index: 2;
+      transform-origin: right center;
+      transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #knife {
+      position: absolute;
+      width: 55%;
+      max-width: 180px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-120%, -50%) rotate(-45deg);
+      opacity: 0;
+      transition: all 0.5s ease;
+      z-index: 3;
+    }
+
+    .flame {
+      position: absolute;
+      width: 5vw;
+      max-width: 16px;
+      height: auto;
+      background: radial-gradient(orange, transparent 70%);
+      border-radius: 50% 50% 20% 20%;
+      filter: blur(1px);
+      animation: flicker 0.3s infinite alternate;
+      z-index: 5;
+    }
+
+    @keyframes flicker {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1, 1.2); opacity: 1; }
+    }
+
+    .btn {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 5vw;
+      max-font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 10px;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .btn:hover {
+      background: #ff4757;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    .message {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .message-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      transform: scale(0.8);
+      transition: transform 0.5s ease;
+    }
+
+    .message.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .message.show .message-content {
+      transform: scale(1);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 10vw;
+      }
+      .btn {
+        font-size: 6vw;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Blow Out the Candles!</h1>
+
+  <div class="cake-container">
+    <img id="cake" src="cake.png" alt="Cake">
+    <img id="cake-slice" src="cake-slice.png" alt="Cake Slice">
+    <img id="knife" src="knife.png" alt="Knife">
+
+    <!-- Example flames -->
+    <div class="flame" style="left: 35%; top: 5%;"></div>
+    <div class="flame" style="left: 50%; top: 2%;"></div>
+    <div class="flame" style="left: 65%; top: 5%;"></div>
+  </div>
+
+  <button class="btn" id="blowBtn">Blow Candles 🎈</button>
+  <button class="btn" id="cutBtn" style="display: none;">Cut the Cake 🎂</button>
+
+  <div class="message" id="message">
+    <div class="message-content">
+      <h2>Happy Birthday Beeray! 🎉</h2>
+      <p>Wishing you an amazing year ahead!</p>
+    </div>
+  </div>
+
+  <audio id="birthdaySong" src="audio/birthday.mp3"></audio>
+
+  <script>
+    const blowBtn = document.getElementById('blowBtn');
+    const cutBtn = document.getElementById('cutBtn');
+    const title = document.getElementById('title');
+    const flames = document.querySelectorAll('.flame');
+    const knife = document.getElementById('knife');
+    const cakeSlice = document.getElementById('cake-slice');
+    const message = document.getElementById('message');
+    const song = document.getElementById('birthdaySong');
+
+    blowBtn.addEventListener('click', () => {
+      flames.forEach(f => {
+        f.style.animation = 'none';
+        f.style.transform = 'scale(0)';
+        f.style.opacity = '0';
+      });
+      blowBtn.style.display = 'none';
+      cutBtn.style.display = 'inline-block';
+      title.textContent = "Now Cut the Cake!";
+      knife.style.opacity = '1';
+      knife.style.transform = 'translate(-50%, -50%) rotate(-30deg)';
+    });
+
+    cutBtn.addEventListener('click', () => {
+      knife.style.transform = 'translate(-50%, -50%) rotate(10deg)';
+      setTimeout(() => {
+        cakeSlice.style.opacity = '1';
+        cakeSlice.style.transform = 'translate(10%, 10%) rotate(15deg)';
+        knife.style.opacity = '0';
+        setTimeout(() => {
+          message.classList.add('show');
+          song.play();
+          title.textContent = "Happy Birthday!";
+          cutBtn.style.display = 'none';
+        }, 800);
+      }, 300);
+    });
+  </script>
+</body>
+</html>
