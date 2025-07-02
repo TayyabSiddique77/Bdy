@@ -8,25 +8,25 @@
   <style>
     body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
       text-align: center;
     }
 
     h1 {
       font-family: 'Dancing Script', cursive;
       color: #d6336c;
-      font-size: 8vw;
-      max-font-size: 3rem;
-      margin: 0 0 20px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      font-size: clamp(2rem, 6vw, 3rem);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      transition: all 0.5s ease;
     }
 
     .cake-container {
@@ -37,43 +37,48 @@
       margin-bottom: 30px;
     }
 
-    #cake, #cake-slice {
+    #cake,
+    #cake-slice {
       width: 100%;
       height: auto;
-      display: block;
     }
 
     #cake-slice {
       position: absolute;
-      top: 0; left: 0;
-      opacity: 0;
+      top: 0;
+      left: 0;
       z-index: 2;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%);
       transform-origin: right center;
+      opacity: 0;
       transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     #knife {
       position: absolute;
-      width: 55%;
+      width: 50%;
       max-width: 180px;
+      z-index: 3;
       left: 50%;
       top: 50%;
       transform: translate(-120%, -50%) rotate(-45deg);
       opacity: 0;
       transition: all 0.5s ease;
-      z-index: 3;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
     }
 
     .flame {
       position: absolute;
-      width: 5vw;
+      width: 4vw;
       max-width: 16px;
-      height: auto;
+      height: 6vw;
+      max-height: 30px;
       background: radial-gradient(orange, transparent 70%);
       border-radius: 50% 50% 20% 20%;
       filter: blur(1px);
       animation: flicker 0.3s infinite alternate;
       z-index: 5;
+      transform-origin: center bottom;
     }
 
     @keyframes flicker {
@@ -82,23 +87,40 @@
     }
 
     .btn {
-      background: #ff6b6b;
+      background-color: #ff6b6b;
       color: white;
       border: none;
-      padding: 12px 30px;
-      font-size: 5vw;
-      max-font-size: 1.2rem;
+      padding: 10px 20px;
+      font-size: clamp(1rem, 5vw, 1.2rem);
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.3s;
       margin: 10px;
       font-family: 'Dancing Script', cursive;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     .btn:hover {
-      background: #ff4757;
+      background-color: #ff4757;
       transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .confetti {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      animation: confetti-fall 3s linear forwards;
+      z-index: 10;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
     .message {
@@ -134,13 +156,15 @@
       transform: scale(1);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 480px) {
       h1 {
-        font-size: 10vw;
+        font-size: 8vw;
       }
       .btn {
         font-size: 6vw;
-        padding: 10px 20px;
+      }
+      .cake-container {
+        width: 95vw;
       }
     }
   </style>
@@ -149,11 +173,12 @@
   <h1 id="title">Blow Out the Candles!</h1>
 
   <div class="cake-container">
-    <img id="cake" src="cake.png" alt="Cake">
-    <img id="cake-slice" src="cake-slice.png" alt="Cake Slice">
+    <img id="cake" src="cake.png" alt="Birthday Cake">
+    <img id="cake-slice" src="cake_slice.png" alt="Cake Slice">
+
     <img id="knife" src="knife.png" alt="Knife">
 
-    <!-- Example flames -->
+    <!-- Flames -->
     <div class="flame" style="left: 35%; top: 5%;"></div>
     <div class="flame" style="left: 50%; top: 2%;"></div>
     <div class="flame" style="left: 65%; top: 5%;"></div>
@@ -164,8 +189,8 @@
 
   <div class="message" id="message">
     <div class="message-content">
-      <h2>Happy Birthday Beeray! 🎉</h2>
-      <p>Wishing you an amazing year ahead!</p>
+      <h2 style="color: #ff6b6b; font-family: 'Dancing Script', cursive; font-size: 2.5rem;">Happy Birthday Beeray! 🎉</h2>
+      <p style="font-size: 1.2rem;">Wishing you an amazing year ahead!</p>
     </div>
   </div>
 
@@ -182,32 +207,51 @@
     const song = document.getElementById('birthdaySong');
 
     blowBtn.addEventListener('click', () => {
-      flames.forEach(f => {
-        f.style.animation = 'none';
-        f.style.transform = 'scale(0)';
-        f.style.opacity = '0';
+      flames.forEach(flame => {
+        flame.style.animation = 'none';
+        flame.style.transform = 'scale(0)';
+        flame.style.opacity = '0';
+        flame.style.transition = 'all 0.5s ease';
       });
+      createConfetti(100);
       blowBtn.style.display = 'none';
       cutBtn.style.display = 'inline-block';
       title.textContent = "Now Cut the Cake!";
-      knife.style.opacity = '1';
-      knife.style.transform = 'translate(-50%, -50%) rotate(-30deg)';
+      setTimeout(() => {
+        knife.style.opacity = '1';
+        knife.style.transform = 'translate(-50%, -50%) rotate(-30deg)';
+      }, 500);
     });
 
     cutBtn.addEventListener('click', () => {
       knife.style.transform = 'translate(-50%, -50%) rotate(10deg)';
       setTimeout(() => {
         cakeSlice.style.opacity = '1';
-        cakeSlice.style.transform = 'translate(10%, 10%) rotate(15deg)';
+        cakeSlice.style.transform = 'translate(40px, 30px) rotate(15deg)';
         knife.style.opacity = '0';
         setTimeout(() => {
           message.classList.add('show');
           song.play();
           title.textContent = "Happy Birthday!";
           cutBtn.style.display = 'none';
+          createConfetti(200);
         }, 800);
       }, 300);
     });
+
+    function createConfetti(count) {
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        confetti.style.width = (Math.random() * 10 + 8) + 'px';
+        confetti.style.height = (Math.random() * 10 + 8) + 'px';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
   </script>
 </body>
 </html>
