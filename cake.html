@@ -71,9 +71,9 @@
       position: absolute;
       width: 4vw;
       max-width: 16px;
-      height: 6vw;
+      height: 300px;
       max-height: 30px;
-      background: radial-gradient(orange, transparent 70%);
+      background: radial-gradient(orange, transparent 100%);
       border-radius: 50% 50% 20% 20%;
       filter: blur(1px);
       animation: flicker 0.3s infinite alternate;
@@ -175,7 +175,6 @@
   <div class="cake-container">
     <img id="cake" src="cake.png" alt="Birthday Cake">
     <img id="cake-slice" src="cake_slice.png" alt="Cake Slice">
-
     <img id="knife" src="knife.png" alt="Knife">
 
     <!-- Flames -->
@@ -189,12 +188,12 @@
 
   <div class="message" id="message">
     <div class="message-content">
-      <h2 style="color: #ff6b6b; font-family: 'Dancing Script', cursive; font-size: 2.5rem;">Happy Birthday Beeray! 🎉</h2>
-      <p style="font-size: 1.2rem;">Wishing you an amazing year ahead!</p>
+      <h2 style="color: #ff6b6b; font-family: 'Dancing Script', cursive; font-size: 2.5rem;">Happy Birthday Teekhi Mirchi! 🎉</h2>
+      <p style="font-size: 1.2rem;">Sada Khush Raho! Gift pending pe rakh lena😜</p>
     </div>
   </div>
 
-  <audio id="birthdaySong" src="audio/birthday.mp3"></audio>
+  <audio id="birthdaySong" src="bdsong.mp3"></audio>
 
   <script>
     const blowBtn = document.getElementById('blowBtn');
@@ -217,6 +216,12 @@
       blowBtn.style.display = 'none';
       cutBtn.style.display = 'inline-block';
       title.textContent = "Now Cut the Cake!";
+
+      // Play birthday song on candle blow
+      song.play().catch(err => {
+        console.log("Audio playback failed:", err);
+      });
+
       setTimeout(() => {
         knife.style.opacity = '1';
         knife.style.transform = 'translate(-50%, -50%) rotate(-30deg)';
@@ -231,7 +236,6 @@
         knife.style.opacity = '0';
         setTimeout(() => {
           message.classList.add('show');
-          song.play();
           title.textContent = "Happy Birthday!";
           cutBtn.style.display = 'none';
           createConfetti(200);

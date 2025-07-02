@@ -1,105 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
-            color: #fff;
-            text-align: center;
-        }
-        .container {
-            position:relative;
-            z-index: 10;
-            opacity: 0;
-            transform: scale(0.4);
-            transition: all 1s ease;
-            margin-bottom: 15%;
-        }
-        .container.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: glow 2s infinite alternate;
-        }
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4; }
-            to { text-shadow: 0 0 15px #fff, 0 0 30px #ff1493; }
-        }
-        .btn {
-            background-color: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .btn:hover {
-            transform: translateY(-5px);
-            background-color: #ff4757;
-        }
-        .heart {
-            position: absolute;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0.4);
+      transition: all 1s ease;
+      margin-bottom: 10%;
+      max-width: 90vw;
+    }
+    .container.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4;
+      }
+      to {
+        text-shadow: 0 0 15px #fff, 0 0 30px #ff1493;
+      }
+    }
+    .btn {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    .btn2 {
+      background-color: #ff5454;
+      color: rgb(255, 255, 255);
+      border: #000000;
+      padding: 5px 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 5px;
+         font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px);
+      background-color: #ff4757;
+    }
+
+    .heart {
+      position: absolute;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(10deg);
+      }
+    }
+
+    .paragraph-wrapper {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .paragraph {
+      color: #fff;
+      font-style: italic;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      transition: all 0.3s ease;
+    }
+
+    .paragraph.expanded {
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container" id="birthdayContainer">
-        <h1>Happy Birthday, Beeray!</h1>
-        <p style="color: rgb(255, 255, 255); font-style: italic; font-family:Verdana, Geneva, Tahoma, sans-serif;">Happy Birthday, bestie! 🎉 I don’t know how you do it, but you somehow manage to be hilarious, kind,<br>
-             chaotic, and wise all at once 😂 From our reel marathons to our deep convos about life and snacks,<br>
-              you make every day more interesting. If birthdays came with “Best Friend Awards,” you’d win every time.,
-            <br>Enjoy your day, eat the cake, ignore the calories, and let’s make more wild memories this year! 🧁❤️</p>
-        <button class="btn" id="surpriseBtn">Chlo Cake katty ab! Click kro</button>
+  <div class="container" id="birthdayContainer">
+    <h1>Happy Birthday, Beeray!</h1>
+    <div class="paragraph-wrapper">
+      <p id="messagePara" class="paragraph">
+        Happy Birthday, bestie! 🎉 I don’t know how you do it, but you somehow manage to be hilarious, kind,
+        chaotic, and wise all at once 😂 From our reel marathons to our deep convos about life and snacks,
+        you make every day more interesting. If birthdays came with “Best Friend Awards,” you’d win every time.
+        Enjoy your day, eat the cake, ignore the calories, and let’s make more wild memories this year! 🧁❤️
+      </p>
+      <button class="btn2" id="readMoreBtn">Read More</button>
     </div>
+    <br>
+    <button class="btn hidden" id="surpriseBtn">Chlo Cake katty ab! Click kro</button>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('birthdayContainer');
-            setTimeout(() => container.classList.add('active'), 500);
-            
-            // Create floating hearts
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
-                heart.classList.add('heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = Math.random() * 100 + 'vh';
-                heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                document.body.appendChild(heart);
-            }
+  <!-- 🎵 Audio that plays when "Read More" is clicked -->
+  <audio id="birthdayIntro" src="baby.mp3"></audio>
 
-            // Open cake page
-            document.getElementById('surpriseBtn').addEventListener('click', () => {
-                window.open('cake.html', '_blank');
-            });
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.getElementById('birthdayContainer');
+      const paragraph = document.getElementById('messagePara');
+      const readMoreBtn = document.getElementById('readMoreBtn');
+      const audio = document.getElementById('birthdayIntro');
+      const cakeBtn = document.getElementById('surpriseBtn');
+
+      setTimeout(() => container.classList.add('active'), 500);
+
+      // Floating hearts
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = Math.random() * 100 + 'vh';
+        heart.style.fontSize = Math.random() * 2 + 1 + 'rem';
+        heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+        document.body.appendChild(heart);
+      }
+
+      // Read more & play music & show cake button
+      readMoreBtn.addEventListener('click', () => {
+        paragraph.classList.add('expanded');
+        readMoreBtn.classList.add('hidden');
+        cakeBtn.classList.remove('hidden');
+        audio.play().catch((err) => {
+          console.log('Audio play blocked:', err);
         });
-    </script>
+      });
+
+      // Open cake page
+      cakeBtn.addEventListener('click', () => {
+        window.open('cake.html', '_blank');
+      });
+    });
+  </script>
 </body>
 </html>
